@@ -1,4 +1,5 @@
 import React from 'react'
+import instance from '../api/axiosInstance';
 
 const Home = () => {
 
@@ -25,8 +26,12 @@ const Home = () => {
         setSetter(updateData)
     }, [])
 
-    const saveTableData = () => {
-        console.log(set)
+    const saveTableData = async () => {
+        const { data } = await instance.post('/', set)
+        data.success ? (
+            localStorage.removeItem('dataSet'),
+            setSetter([])
+        ) : (console.log('not working'))
     }
 
     const remove = (index) => {
@@ -34,7 +39,7 @@ const Home = () => {
         localStorage.setItem('dataSet', JSON.stringify(updateData))
         setSetter(updateData)
     };
-    console.log('set: ', set)
+
     return (
         <>
             <div>
